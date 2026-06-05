@@ -1,12 +1,12 @@
-.venv/
-venv/
-*.pyc
-.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
-
+.venv/
+venv/
+*.pyc
+.idea/
 # C extensions
 *.so
 
