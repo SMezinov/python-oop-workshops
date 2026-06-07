@@ -1,16 +1,21 @@
-from datetime import date, datetime
+
+from datetime import date
 from item_status import ItemStatus
+from event_log import EventLog
 
 
 class BoardItem:
-    def __init__(self, title: str, due_date: date):
-        self._status = ItemStatus.OPEN
-        self._event_logs = []
+    def __init__(self, title: str, due_date: date, initial_status=ItemStatus.OPEN):
+        self._ensure_valid_title(title)
+        self._ensure_valid_due_date(due_date)
 
-        self.title = title
-        self.due_date = due_date
+        self._title = title
+        self._due_date = due_date
+        self._status = initial_status
+        self._history = []
 
-        self._log_event(f'Item created: {self.info()}')
+        item_type = self.__class__.__name__
+        self._log_event(f'{item_type} created: {self.info()}')
 
     @property
     def status(self):
@@ -21,18 +26,9 @@ class BoardItem:
         return self._title
 
     @title.setter
-    def title(self, value: str):
-        if len(value) < 5 or len(value) > 30:
-            raise ValueError('Illegal title length [5:30]')
-
-        if not hasattr(self, '_title'):
-            self._title = value
-            return
-
-        if value == self._title:
-            return
-
-        old_title = self.title
+    def title(self, value):
+        self._ensure_valid_title(value)
+        old_title = self._title
         self._title = value
         self._log_event(f'Title changed from {old_title} to {value}')
 
@@ -41,44 +37,45 @@ class BoardItem:
         return self._due_date
 
     @due_date.setter
-    def due_date(self, value: date):
-        if value < date.today():
-            raise ValueError("Due date can't be in the past.")
-
-        if not hasattr(self, '_due_date'):
-            self._due_date = value
-            return
-
-        if value == self._due_date:
-            return
-
-        old_due_date = self.due_date
+    def due_date(self, value):
+        self._ensure_valid_due_date(value)
+        old_date = self._due_date
         self._due_date = value
-        self._log_event(f'DueDate changed from {old_due_date} to {value}')
+        self._log_event(f'DueDate changed from {old_date} to {value}')
 
     def revert_status(self):
-        old_status = self.status
-        self._status = ItemStatus.previous(self.status)
-
-        if old_status == self.status:
-            self._log_event(f"Can't change status, already at {self.status}")
-        else:
-            self._log_event(f'Status changed from {old_status} to {self.status}')
+        prev = self._status
+        self._status = ItemStatus.previous(self._status)
+        self._log_status_change(prev, self._status)
 
     def advance_status(self):
-        old_status = self.status
-        self._status = ItemStatus.next(self.status)
-
-        if old_status == self.status:
-            self._log_event(f"Can't change status, already at {self.status}")
-        else:
-            self._log_event(f'Status changed from {old_status} to {self.status}')
+        prev = self._status
+        self._status = ItemStatus.next(self._status)
+        self._log_status_change(prev, self._status)
 
     def info(self):
-        return f'{self.title}, [{self.status} | {self.due_date}]'
+        return f'{self._title}, [{self._status} | {self._due_date}]'
 
     def history(self):
-        return '\n'.join(self._event_logs)
+        return '\n'.join((log.info() for log in self._history))
 
-    def _log_event(self, description):
-        self._event_logs.append(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] {description}")
+    def _log_event(self, description: str):
+        self._history.append(EventLog(description))
+
+    def _log_status_change(self, prev: str, current: str):
+        if prev == current:
+            self._log_event(f'Cant change status, already at {current}')
+        else:
+            self._log_event(f'Status changed from {prev} to {current}')
+
+    def _ensure_valid_title(self, title):
+        if title is None or title.strip() == '':
+            raise ValueError('Title must be something.')
+        if (len(title) < 5 or len(title) > 30):
+            raise ValueError('Illegal title length [5:30]')
+
+    def _ensure_valid_due_date(self, due_date):
+        if due_date is None:
+            raise ValueError('Date is needed.')
+        if (due_date < date.today()):
+            raise ValueError('Due date cant be in the past.')
