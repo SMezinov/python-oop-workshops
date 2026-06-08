@@ -1,0 +1,129 @@
+# Byte-compiled / optimized / DLL files
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Python cache files
+
+*.pyc
+*.pyo
+*.pyd
+
+# Test and coverage files
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Virtual environments
+
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# VS Code settings
+
+.vscode/
+
+# PyCharm / IntelliJ IDEA
+
+.idea/
+
+# Jupyter Notebook
+
+.ipynb_checkpoints/
+
+# Distribution / packaging
+
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Installer logs
+
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+
+junit.xml
+coverage_html_report/
+
+# mypy
+
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# pyright
+
+.pyright/
+
+# Ruff
+
+.ruff_cache/
+
+# Black
+
+.black
+
+# Environments and local config
+
+.env
+.env.*
+*.env
+
+# Local database files
+
+*.sqlite3
+*.sqlite
+db.sqlite3
+
+# Logs
+
+*.log
+
+# OS generated files
+
+.DS_Store
+Thumbs.db
+
+# Temporary files
+
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Project-specific ignored files/folders
+
+**pycache**/
+.pytest_cache/
+.vscode/
+*.pyc
