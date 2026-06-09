@@ -13,3 +13,8 @@ class Issue(BoardItem):
     @property
     def description(self):
         return self._description
+
+    def info(self):
+        board_item_info = super().info()
+
+        return f'Issue ({self.description}) {board_item_info}'

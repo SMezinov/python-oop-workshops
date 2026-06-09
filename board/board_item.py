@@ -1,4 +1,3 @@
-
 from datetime import date
 from item_status import ItemStatus
 from event_log import EventLog
@@ -15,7 +14,7 @@ class BoardItem:
         self._history = []
 
         item_type = self.__class__.__name__
-        self._log_event(f'{item_type} created: {self.info()}')
+        self._log_event(f'{item_type} created: {self._base_info()}')
 
     @property
     def status(self):
@@ -53,8 +52,11 @@ class BoardItem:
         self._status = ItemStatus.next(self._status)
         self._log_status_change(prev, self._status)
 
-    def info(self):
+    def _base_info(self):
         return f'{self._title}, [{self._status} | {self._due_date}]'
+
+    def info(self):
+        return self._base_info()
 
     def history(self):
         return '\n'.join((log.info() for log in self._history))

@@ -26,3 +26,8 @@ class Task(BoardItem):
 
         if (len(assignee) < 5 or len(assignee) > 30):
             raise ValueError('Illegal assignee length [5:30]')
+
+    def info(self):
+        board_item_info = super().info()
+
+        return f'Task (assigned to: {self.assignee}) {board_item_info}'
