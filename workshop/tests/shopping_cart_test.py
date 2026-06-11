@@ -30,11 +30,10 @@ class ShoppingCart_Should(unittest.TestCase):
     def test_removeProduct_removesProductFromList(self):
         # Arrange
         cart = ShoppingCart()
-        product = fake_product()
-        cart.add_product(product)
+        cart.add_product(fake_product())
 
         # Act
-        cart.remove_product(product)
+        cart.remove_product(fake_product())
 
         # Assert
         self.assertEqual(0, len(cart.products))
@@ -42,11 +41,10 @@ class ShoppingCart_Should(unittest.TestCase):
     def test_containsProduct_returnsTrue_when_productFound(self):
         # Arrange
         cart = ShoppingCart()
-        product = fake_product()
-        cart.add_product(product)
+        cart.add_product(fake_product())
 
         # Act & Assert
-        self.assertTrue(cart.contains_product(product))
+        self.assertTrue(cart.contains_product(fake_product()))
 
     def test_containsProduct_returnsFalse_when_productFound(self):
         # Arrange

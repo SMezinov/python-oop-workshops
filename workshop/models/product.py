@@ -3,16 +3,7 @@ class Product:
         self.name = name
         self.brand = brand
         self.price = price
-
-        if gender is None:
-            raise ValueError("Gender cannot be None.")
         self._gender = gender
-
-    def __eq__(self, other):
-        if not isinstance(other, Product):
-            return False
-
-        return self.name == other.name
 
     @property
     def name(self):
@@ -20,10 +11,8 @@ class Product:
 
     @name.setter
     def name(self, value):
-        if value is None:
-            raise ValueError("Product name cannot be None.")
-        if not 3 <= len(value) <= 10:
-            raise ValueError('Minimum product name’s length is 3 symbols and maximum is 10 symbols.')
+        if len(value) < 3 or len(value) > 10:
+            raise ValueError('Name should be between 3 and 10 symbols.')
 
         self._name = value
 
@@ -33,10 +22,8 @@ class Product:
 
     @brand.setter
     def brand(self, value):
-        if value is None:
-            raise ValueError("Brand name cannot be None.")
-        if not 2 <= len(value) <= 10:
-            raise ValueError('Minimum brand name’s length is 2 symbols and maximum is 10 symbols.')
+        if len(value) < 2 or len(value) > 10:
+            raise ValueError('Brand should be between 2 and 10 symbols.')
 
         self._brand = value
 
@@ -46,10 +33,8 @@ class Product:
 
     @price.setter
     def price(self, value):
-        if value is None:
-            raise ValueError("Price cannot be None.")
         if value < 0:
-            raise ValueError('Price cannot be negative.')
+            raise ValueError('Price should not be negative.')
 
         self._price = value
 
@@ -58,6 +43,8 @@ class Product:
         return self._gender
 
     def to_string(self):
-        return f''' #{self.name} {self.brand}
- #Price: ${self.price:.2f}
- #Gender: {self.gender}'''
+        return '\n'.join([
+            f' #{self.name} {self.brand}',
+            f' #Price: ${self.price:.2f}',
+            f' #Gender: {self.gender}',
+        ])

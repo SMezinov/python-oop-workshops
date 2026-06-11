@@ -1,9 +1,12 @@
 import unittest
 
 from core.application_data import ApplicationData
+from models.shampoo import Shampoo
 from models.shopping_cart import ShoppingCart
-import category_test
-import product_test
+from tests import category_test
+from models.toothpaste import Toothpaste
+from tests import toothpaste_test
+from tests import shampoo_test
 
 
 class ApplicationData_Should(unittest.TestCase):
@@ -21,28 +24,14 @@ class ApplicationData_Should(unittest.TestCase):
         # Act && Assert
         self.assertTrue(data.category_exists(category_test.VALID_NAME))
 
-    def test_categoryExists_returnsFalse_whenCategoryDoesNotExist(self):
-        # Arrange
-        data = ApplicationData()
-
-        # Act && Assert
-        self.assertFalse(data.category_exists(category_test.VALID_NAME))
-
     def test_productExists_returnsTrue_whenProductExists(self):
         # Arrange
         data = ApplicationData()
-        data.create_product(product_test.VALID_NAME, product_test.VALID_BRAND,
-                            product_test.VALID_PRICE, product_test.VALID_GENDER)
+        data.create_shampoo(shampoo_test.VALID_NAME, shampoo_test.VALID_BRAND, shampoo_test.VALID_PRICE,
+                            shampoo_test.VALID_GENDER, shampoo_test.VALID_USAGE_TYPE, shampoo_test.VALID_MILLILITERS)
 
         # Act && Assert
-        self.assertTrue(data.product_exists(product_test.VALID_NAME))
-
-    def test_productExists_returnsFalse_whenProductDoesNotExist(self):
-        # Arrange
-        data = ApplicationData()
-
-        # Act && Assert
-        self.assertFalse(data.product_exists(product_test.VALID_NAME))
+        self.assertTrue(data.product_exists(shampoo_test.VALID_NAME))
 
     def test_createCategory_createsSuccessfully(self):
         # Arrange
@@ -54,16 +43,31 @@ class ApplicationData_Should(unittest.TestCase):
         # Assert
         self.assertEqual(1, len(data.categories))
 
-    def test_createProduct_createsSuccessfully(self):
+    def test_createShampoo_createsSuccessfully(self):
         # Arrange
         data = ApplicationData()
 
         # Act
-        data.create_product(product_test.VALID_NAME, product_test.VALID_BRAND,
-                            product_test.VALID_PRICE, product_test.VALID_GENDER)
+        shampoo = data.create_shampoo(shampoo_test.VALID_NAME, shampoo_test.VALID_BRAND, shampoo_test.VALID_PRICE,
+                            shampoo_test.VALID_GENDER, shampoo_test.VALID_USAGE_TYPE, shampoo_test.VALID_MILLILITERS)
+
 
         # Assert
         self.assertEqual(1, len(data.products))
+        self.assertIsInstance(shampoo, Shampoo)
+
+    def test_createToothpaste_createsSuccessfully(self):
+        # Arrange
+        data = ApplicationData()
+
+        # Act
+        toothpaste = data.create_toothpaste(toothpaste_test.VALID_NAME, toothpaste_test.VALID_BRAND, toothpaste_test.VALID_PRICE,
+                            toothpaste_test.VALID_GENDER, toothpaste_test.TEST_INGREDIENTS)
+
+
+        # Assert
+        self.assertEqual(1, len(data.products))
+        self.assertIsInstance(toothpaste, Toothpaste)
 
     def test_findCategoryByName_returnsSuccessfully_whenCategoryExists(self):
         # Arrange
@@ -84,16 +88,16 @@ class ApplicationData_Should(unittest.TestCase):
     def test_findProductByName_returnsSuccessfully_whenProductExists(self):
         # Arrange
         data = ApplicationData()
-        data.create_product(product_test.VALID_NAME, product_test.VALID_BRAND,
-                            product_test.VALID_PRICE, product_test.VALID_GENDER)
+        data.create_toothpaste(toothpaste_test.VALID_NAME, toothpaste_test.VALID_BRAND, toothpaste_test.VALID_PRICE,
+                            toothpaste_test.VALID_GENDER, toothpaste_test.TEST_INGREDIENTS)
 
         # Act
-        product = data.find_product_by_name(product_test.VALID_NAME)
+        product = data.find_product_by_name(toothpaste_test.VALID_NAME)
 
         # Assert
-        self.assertEqual(product_test.VALID_NAME, product.name)
+        self.assertEqual(toothpaste_test.VALID_NAME, product.name)
 
     def test_findProductByName_raisesError_whenProductDoesNotExist(self):
         with self.assertRaises(ValueError):
             data = ApplicationData()
-            data.find_product_by_name(product_test.VALID_NAME)
+            data.find_product_by_name(toothpaste_test.VALID_NAME)

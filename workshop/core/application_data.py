@@ -1,16 +1,30 @@
+from models import shampoo
 from models.category import Category
 from models.product import Product
+from models.shampoo import Shampoo
 from models.shopping_cart import ShoppingCart
+from models.toothpaste import Toothpaste
+
 
 class ApplicationData:
     def __init__(self):
         self._products = []
         self._categories = []
+        self._toothpaste = []
+        self._shampoo = []
         self._shopping_cart = ShoppingCart()
 
     @property
     def products(self):
         return tuple(self._products)
+
+    @property
+    def toothpaste(self):
+        return tuple(self._toothpaste)
+
+    @property
+    def shampoo(self):
+        return tuple(self._shampoo)
 
     @property
     def categories(self):
@@ -25,39 +39,44 @@ class ApplicationData:
             if product.name == name:
                 return product
 
-        raise ValueError('Product not found.')
+        raise ValueError(f'Product {name} does not exist!')
 
     def find_category_by_name(self, name) -> Category:
         for category in self._categories:
             if category.name == name:
                 return category
 
-        raise ValueError('Category not found.')
+        raise ValueError(f'Category {name} does not exist!')
 
     def create_category(self, name) -> None:
         if self.category_exists(name):
-            raise ValueError('Category already exists.')
+            raise ValueError(f'Category {name} already exists!')
 
-        new_cat = Category(name)
-        self._categories.append(new_cat)
+        category = Category(name)
+        self._categories.append(category)
 
-    def create_product(self, name, brand, price, gender) -> None:
+    def create_shampoo(self, name, brand, price, gender, usage_type, milliliters) -> Shampoo:
         if self.product_exists(name):
-            raise ValueError('Product already exists.')
+            raise ValueError(f'Product with name {name} already exists!')
 
-        new_prod = Product(name, brand, price, gender)
-        self._products.append(new_prod)
+        shampoo = Shampoo(name, brand, price, gender, usage_type, milliliters)
+        self._products.append(shampoo)
+        self._shampoo.append(shampoo)
+
+        return shampoo
+
+    def create_toothpaste(self, name, brand, price, gender, ingredients) -> Toothpaste:
+        if self.product_exists(name):
+            raise ValueError(f'Product with name {name} already exists!')
+
+        toothpaste = Toothpaste(name, brand, price, gender, ingredients)
+        self._toothpaste.append(toothpaste)
+        self._products.append(toothpaste)
+
+        return toothpaste
 
     def category_exists(self, name) -> bool:
-        for category in self._categories:
-            if category.name == name:
-                return True
-
-        return False
+        return name in [c.name for c in self._categories]
 
     def product_exists(self, name) -> bool:
-        for product in self._products:
-            if product.name == name:
-                return True
-
-        return False
+        return name in [p.name for p in self._products]

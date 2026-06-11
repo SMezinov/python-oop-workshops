@@ -38,21 +38,19 @@ class Category_Should(unittest.TestCase):
     def test_addProduct_raisesError_whenSameProductAddedMoreThanOnce(self):
         # Arrange
         category = Category(VALID_NAME)
-        product = fake_product()
-        category.add_product(product)
+        category.add_product(fake_product())
        
         with self.assertRaises(ValueError):
             # Act & Assert
-            category.add_product(product)
+            category.add_product(fake_product())
 
     def test_removeProduct_removesProductFromList(self):
         # Arrange
         category = Category(VALID_NAME)
-        product = fake_product()
-        category.add_product(product)
+        category.add_product(fake_product())
 
         # Act
-        category.remove_product(product)
+        category.remove_product(fake_product())
 
         # Assert
         self.assertEqual(0, len(category.products))

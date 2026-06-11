@@ -10,16 +10,16 @@ class ShoppingCart:
         self._products.append(product)
 
     def remove_product(self, product):
-        if product in self._products:
-            self._products.remove(product)
+        names = [p.name for p in self._products]
+        if product.name not in names:
+            raise ValueError(
+                f'Product {product.name} not found in ShoppingCart')
+
+        idx = names.index(product.name)
+        self._products.pop(idx)
 
     def contains_product(self, product):
-        return product in self._products
+        return product.name in [p.name for p in self._products]
 
     def total_price(self):
-        total = 0
-
-        for product in self._products:
-            total += product.price
-
-        return total
+        return sum((p.price for p in self._products))

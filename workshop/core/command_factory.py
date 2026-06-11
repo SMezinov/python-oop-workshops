@@ -1,7 +1,8 @@
 from commands.add_to_category import AddToCategoryCommand
 from commands.add_to_shopping_cart import AddToShoppingCartCommand
 from commands.create_category import CreateCategoryCommand
-from commands.create_product import CreateProductCommand
+from commands.create_shampoo import CreateShampooCommand
+from commands.create_toothpaste import CreateToothpasteCommand
 from commands.remove_from_category import RemoveFromCategoryCommand
 from commands.remove_from_shopping_cart import RemoveFromShoppingCartCommand
 from commands.show_category import ShowCategoryCommand
@@ -17,8 +18,10 @@ class CommandFactory:
 
         if cmd.lower() == "createcategory":
             return CreateCategoryCommand(params, self._app_data)
-        if cmd.lower() == "createproduct":
-            return CreateProductCommand(params, self._app_data)
+        if cmd.lower() == "createshampoo":
+            return CreateShampooCommand(params, self._app_data)
+        if cmd.lower() == "createtoothpaste":
+            return CreateToothpasteCommand(params, self._app_data)
         if cmd.lower() == "showcategory":
             return ShowCategoryCommand(params, self._app_data)
         if cmd.lower() == "addtocategory":

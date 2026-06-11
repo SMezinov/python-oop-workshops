@@ -9,11 +9,8 @@ class Category:
 
     @name.setter
     def name(self, value):
-        if value is None:
-            raise ValueError("Category name cannot be None.")
-
-        if not 2 <= len(value) <= 15:
-            raise ValueError('Minimum category name’s length is 2 symbols and maximum is 15 symbols.')
+        if len(value) < 2 or len(value) > 15:
+            raise ValueError('Name should be between 2 and 15 symbols.')
 
         self._name = value
 
@@ -22,29 +19,25 @@ class Category:
         return tuple(self._products)
 
     def add_product(self, product):
-        if product in self._products:
-            raise ValueError('Product already exists in this category.')
-
+        if product.name in [p.name for p in self._products]:
+            raise ValueError(
+                f'Product {product.name} already added to category {self.name}')
+        
         self._products.append(product)
 
     def remove_product(self, product):
-        if product not in self._products:
-            raise ValueError('This product is not in Product list.')
+        names = [p.name for p in self._products]
+        if product.name not in names:
+            raise ValueError(
+                f'Product {product.name} not found in category {self.name}')
 
-        self._products.remove(product)
+        idx = names.index(product.name)
+        self._products.pop(idx)
 
     def to_string(self):
-        result = f'#Category: {self.name}'
-
-        if len(self._products) == 0:
-            result += '\n #No products in this category'
-            return result
-
-        for i in range(len(self._products)):
-            current_product = self._products[i]
-            result += '\n' + current_product.to_string()
-
-            if i < len(self._products) - 1:
-                result += '\n ==='
-
-        return result
+        new_line = '\n'
+        if len(self._products) > 0:
+            product_strings = [p.to_string() for p in self._products]
+            return f'#Category: {self.name}{new_line}{new_line.join(product_strings)}'
+        else:
+            return f'#Category: {self.name}{new_line} #No products in this category'

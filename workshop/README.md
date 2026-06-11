@@ -1,87 +1,120 @@
-<img src="https://i.imgur.com/yqIN5FX.png" width="300px" />
+## OOP Workshop - Cosmetics shop 2
 
-# Cosmetics shop - workshop (OOP - Classes exercise)
+### Description
 
-### 1. Description
-The shop already has a working Engine. You do not have to touch anything in it. Just use it.
-Each product has **name, brand, price and gender** (men, women, unisex).
-There are **categories** of products. Each **category** has **name** and products can be **added or removed**. There is also a **shopping cart**. Products can be **added or removed** from it. The same product can be added to the shopping cart more than once. The shopping cart can calculate the **total price** of all products in it.
-- Your **task** is to **finish the implementation** of the classes to model the cosmetics shop.
-- The **NotImplementedErrors** should give you an idea where to write code.
+You are given a software system for managing a cosmetics shop. The system already has a working Engine. You do not have to touch anything in it. Just use it.
 
-### 2. Category class
-#### Description
-- Minimum category name’s length is 2 symbols and maximum is 15 symbols.
-- `products` property getter should return an immutable collection (tuple)
-- Products in category should be displayed in insertion order
-- When removing product from category, if the product is not found you should raise an error.
-- Category’s `to_string()` should return text in the following format:
+There should be two types of products for now, Shampoos and Toothpastes.
 
-```
-#Category: {category name}
- #{Name} {Brand}
- #Price: ${price}
- #Gender: {genderType}
- ===
- #{Name} {Brand}
- #Price: ${price}
- #Gender: {genderType}
-```
+- Each Shampoo has **name, brand, price, gender, milliliters, usage**.
+- Each Toothpaste has **name, brand, price, gender, ingredients**.
 
-```
-#Category: {category name}
- #No products in this category
-```
+There are also Categories and Shopping Carts.
 
-### 3. Products
-#### Description
-- Minimum product name’s length is 3 symbols and maximum is 10 symbols.
-- Minimum brand name’s length is 2 symbols and maximum is 10 symbols.
-- Price cannot be negative.
-- Gender type can be **"Men"**, **"Women"** or **"Unisex"**. (implemented)
-- Print returns text in the following format: _(you might consider reusing this in the category print.)_
-```
- #{Name} {Brand}
- #Price: ${Price}
- #Gender: {GenderType}
-```
-> Two products with **the same name** are considered equal. (rules for checking whether a product exists in a collection)
+- Categories have a **name and a list of products**.
+- Shopping Cart has a **list of products**.
 
-### 3. ApplicationData class
-#### Description
-- An instance of this class will hold all application data
-- Attributes 
-   - `products` (collection) 
-   - `categories` (collection)
-   -  `ShoppingCart`
+### Task
 
-- Methods
-    - can create Category/Product. ValueError if category/product with the same name already exists
-    - find - returns Category/Product. ValueError if a category/product with that name does not exist
-    - exists - return bool for whether a product/category with the searched name exists
+Your task is to **design an object-oriented class hierarchy** to model the cosmetics shop, **using the best practices for object-oriented design** (OOD) and **object-oriented programming** (OOP). Encapsulate correctly all attributes and use validation whenever needed.
 
- 
 
-### 4. Shopping cart
-#### Description
-- Adding the same product more than once is allowed.
-- Removing a product from the shopping cart does not throw an error
-- The cart can calculate the total price of all products
-- The cart can check if a product is currently added to it
+#### 1. Shampoo class
 
-> **Constraint 1** - If a null value is passed to some mandatory property, your program should raise a proper error.  
-> **Constraint 2** - You should only write code in the classes in the models folder and the ApplicationData class
+- Implements Shampoo
+- Has a name, brand, price, gender, milliliters, and usage type
+- The name’s length should be between 3 and 10 symbols.
+- The brand name’s length should be between 2 and 10 symbols.
+- The price cannot be negative.
+- Gender type can be one of **"Men"**, **"Women"** or **"Unisex"**.
+- Milliliters cannot be negative.
+- Usage type can be one of **"Every_Day"** or **"Medical"**.
 
-> **Notes** - To simplify your work you are given an already built Engine (for executing some basic operations) and Commands (handle the logic for different operations).
+#### 2. ToothPaste class
+
+- Implements Toothpaste.
+- Has name, brand, price, gender, and ingredients.
+- The name’s length should be between 3 and 10 symbols.
+- The brand name’s length should be between 2 and 10 symbols.
+- The price cannot be negative.
+- Gender type can be one of **"Men"**, **"Women"** or **"Unisex"**.
+
+#### 3. ApplicationData class
+
+- Stores all the application's data.
+- Handles creation of new objects.
+- Used to find already existing objects.
+
+
+### Constraints
+
+- Look into the example below to get better understanding of the printing format.
+- All floating-point numbers should be printed rounded to two decimal places.
+
+
+### Additional notes
+
+- To simplify your work you are given an already built execution engine that executes a sequence of commands read from the console using the classes in your project.
+- If you decide to create and use new classes you are allowed to do so.
+- When you implement an unfinished method (one that raise `NotImplementedError`), make sure to delete the `raises NotImplementedError` line.
+
+### Unit Tests
+
+You are given unit tests to keep track of your progress.
+
+## Step by step guide
+
+> *Hint*: You don't need to modify most of the functionality but of course you could try to understand how it works.
+
+> *Hint*: Run the Unit tests whenever you finish a task.
+
+1. Implement the classes for shampoo and toothpaste
+
+- Look at the **models** folder and think about how to reuse functionality from Product class.
+- In the `__init__`, pass the required fields to the super constructor and initialize those specific for the derived classes 
+- Make sure validations are correct.
+- Implement all the necessary properties. `Leave the to_string()` method for later.
+
+
+2. Implement `CreateShampooCommand` and `CreateToothpasteCommand`.
+
+- In the `execute` method, extract and parse the input parameters, and after that use them to create the Shampoo/Toothpaste.
+
+> *Hint*: Look at `CreateCategoryCommand` if you get stuck.
+
+3. Implement the unfinished methods in the `ApplicationData` class.
+
+- This is where the creation of the objects should be.
+- Add the newly created object to the list.
+
+5. Implement the `to_string()` methods
+
+**6. ADVANCED TASK**
+
+- Implement new product and its creation in the engine class.
+- Cream (name, brand, price, gender, scent)
+  - name minimum 3 symbols and maximum 15
+  - brand minimum 3 symbols and maximum 15
+  - price greater than zero
+  - gender (men, women, unisex)
+  - scent (lavender, vanilla, rose)
+- Implement product creation in the Factory and the ApplicationData
+  - Just look at the other products
+- Test it if it works correctly
 
 ### Input example
 
-```
-CreateProduct MyMan Trashy 10.99 Men
+```none
+CreateShampoo MyMan Trashy 10.99 Men 1000 Every_Day
+CreateToothpaste White Expensive 10.99 Men calcium,fluorid
 CreateCategory Shampoos
+CreateCategory Toothpastes
 AddToCategory Shampoos MyMan
+AddToCategory Toothpastes White
 AddToShoppingCart MyMan
-ShowCategory Shampoos 
+AddToShoppingCart White
+ShowCategory Shampoos
+ShowCategory Toothpastes
 TotalPrice
 RemoveFromCategory Shampoos MyMan
 ShowCategory Shampoos
@@ -92,64 +125,30 @@ End
 
 ### Output Example
 
-```
-Product with name MyMan was created!
+```none
+Shampoo with name MyMan was created!
+Toothpaste with name White was created!
 Category with name Shampoos was created!
+Category with name Toothpastes was created!
 Product MyMan added to category Shampoos!
+Product White added to category Toothpastes!
 Product MyMan was added to the shopping cart!
+Product White was added to the shopping cart!
 #Category: Shampoos
- #MyMan Trashy
+#MyMan Trashy
  #Price: $10.99
  #Gender: Men
-$10.99 total price currently in the shopping cart!
+ #Milliliters: 1000
+ #Usage: EveryDay
+#Category: Toothpastes
+#White Expensive
+ #Price: $10.99
+ #Gender: Men
+ #Ingredients: [calcium, fluorid]
+$21.98 total price currently in the shopping cart.
 Product MyMan removed from category Shampoos!
 #Category: Shampoos
- #No products in this category
+ #No product in this category
 Product MyMan was removed from the shopping cart!
-No products in shopping cart!
+$10.99 total price currently in the shopping cart.
 ```
-
-> **Hint**: You don't need to take care of the Engine class, the CommandFactory class, the Main method, and the Commands but you can understand how they work
-
->You are given a template of the Cosmetics shop. Please take a look at it carefully before you try to do anything. Try to understand all the classes and how they are supposed to interact with each other.
-
-### Unit Tests
-
-- You have been given unit tests to keep track off your progress. Run them from the Testing explorer in the nav menu in VSCode
-- Should you get stuck, check out the tests' names to guide you what you should do.
-
-## Step by step guide
-
-> *Hint: Run the tests whenever you finish a task to check if it's implemented correctly.*
-
-1. Start with the `Product` class
-   - Apply the Encapsulation principle to all the attributes (make sure all fields are private (by convention), add provide properties for them).
-
-1. Navigate to the `ApplicationData` class
-
-    - Implement the `find` methods - they should go through the respective collections and return the item that has the given name. What should happen if there is no item with that name? Maybe throw an exception?
-    - Implement the `create` methods - they accept the needed arguments to create a category or a product.
-    - Implement the `exists` methods - they go through the respective collections and return `true` if there is an item that has the given name.
-
-1. Finish the `ShoppingCart` class
-
-    - Encapsulate it (don't allow direct access to it).
-    - Initialize the `products` collection.
-
-    ```python
-    def __init__(self):
-        self._products = []
-    ```
-
-    - Implement the methods that add or remove products from the collection.
-
-1. Finish the `Category` class
-
-   - Initialize the collection.
-   - Implement the methods that add or remove products from the collection.
-
-1. Implement `to_string()` methods in both the `Category` and `Product` classes.
-
-   - To test the `to_string()` method you need to run the application, pass the sample input and check the output.
-   - There is also a unit test for the `product.to_string()` which you can use
-
