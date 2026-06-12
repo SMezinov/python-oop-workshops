@@ -1,6 +1,6 @@
-from board_item import BoardItem
+from board_items.board_item import BoardItem
 from datetime import date
-from item_status import ItemStatus
+from board_items.item_status import ItemStatus
 
 
 class Issue(BoardItem):

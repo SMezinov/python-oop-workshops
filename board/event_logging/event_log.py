@@ -1,6 +1,5 @@
 from datetime import datetime
 
-
 class EventLog():
     _format = '%m/%d/%Y, %H:%M:%S'
 

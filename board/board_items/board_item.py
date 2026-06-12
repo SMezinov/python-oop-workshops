@@ -1,6 +1,6 @@
 from datetime import date
-from item_status import ItemStatus
-from event_log import EventLog
+from board_items.item_status import ItemStatus
+from event_logging.event_log import EventLog
 
 
 class BoardItem:

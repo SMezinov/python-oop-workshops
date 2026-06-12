@@ -1,13 +1,20 @@
-from board_item import BoardItem
+from board_items.board_item import BoardItem
 from datetime import date
-from item_status import ItemStatus
+from board_items.item_status import ItemStatus
+from user.user import User
 
 
 class Task(BoardItem):
-    def __init__(self, title: str, assignee: str, due_date: date):
+    def __init__(self, title: str, assignee: User , due_date: date):
         super().__init__(title, due_date, initial_status=ItemStatus.TODO)
         self._ensure_valid_assignee(assignee)
         self._assignee = assignee
+
+    def __str__(self):
+        return self.info()
+
+    def __repr__(self):
+        return self.info()
 
     @property
     def assignee(self):
@@ -21,11 +28,13 @@ class Task(BoardItem):
         self._log_event(f'Assignee changed from {old_assignee} to {value}')
 
     def _ensure_valid_assignee(self, assignee):
-        if assignee is None or assignee.strip() == '':
-            raise ValueError('Illegal assignee. It must be minimum one symbol.')
+        if assignee is None:
+            raise ValueError('Assignee can not be empty.')
 
-        if (len(assignee) < 5 or len(assignee) > 30):
-            raise ValueError('Illegal assignee length [5:30]')
+        if not isinstance(assignee, User):
+            raise ValueError('Invalid assignee.')
+
+        return assignee
 
     def info(self):
         board_item_info = super().info()
